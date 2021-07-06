@@ -1,0 +1,44 @@
+<mvc:View controllerName="ps.dewa.makelist.MakeList.controller.SelectCreate" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic">
+	<semantic:FullscreenPage title="{i18n>matSelTitle}" showNavButton="true" navButtonPress="onBack" showFooter="false" class="pageTitleClass">
+		<semantic:content>
+			<form:SimpleForm editable="true" layout="ResponsiveGridLayout" title="{i18n>MSSFORMTITL}" labelSpanXL="3" labelSpanL="3" labelSpanM="3"
+				labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="3" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+				singleContainerFullSize="false">
+				<form:content>
+					<!--vendor F4-->
+					<Label text="{i18n>VENDOR}"/>
+					<Input value="{SelectCreate>/Vendor}" maxLength="10" placeholder="{i18n>VENDORNAME_SEARCH}" description="{SelectCreate>/Name}"
+						showValueHelp="true" valueHelpRequest="handleVendorValueHelp" liveChange="onVendorChange" submit="getVendorDescription" required="true"
+						valueState="{SelectCreate>/vendorInputState}">
+						<!--showSuggestion="true" suggestionItems="{/MSVendorsListSet}" suggest="handleVendorSuggest" suggestionItemSelected="handleVendorSuggestionSelected"-->
+						<!--<suggestionItems>
+							<core:ListItem text="{Name}" additionalText="{Vendor}"/>
+						</suggestionItems>-->
+					</Input>
+					<!--Purchase Order F4-->
+					<Label text="{i18n>PO}"/>
+					<Input value="{SelectCreate>/PoNum}" maxLength="10" placeholder="{i18n>PO_SEARCH}" showSuggestion="false" showValueHelp="true"
+						valueHelpRequest="handlePOValueHelp" liveChange="onPOChange" required="true" valueState="{SelectCreate>/poInputState}"
+						enabled="{SelectCreate>/bPOEnabled}">
+						<!--suggestionItems="{/MSPOsListSet}" suggest="handlePOSuggest" suggestionItemSelected="handleVendorSuggestionSelected"-->
+						<!--<suggestionItems>
+							<core:ListItem text="{Name}" additionalText="{Vendor}"/>
+						</suggestionItems>-->
+					</Input>
+					<Label/>
+					<Button text="{i18n>BTN_BACK}" icon="sap-icon://back" press="onBack">
+						<layoutData>
+							<l:GridData span="XL1 L2 M2 S4"/>
+						</layoutData>
+					</Button>
+					<Button text="{i18n>MS_CREATE_BUTTON}" type="Emphasized" press="onPressMatSel" enabled="{SelectCreate>/bCreateButtonEnabled}">
+						<layoutData>
+							<l:GridData span="XL1 L2 M2 S4"/>
+						</layoutData>
+					</Button>
+				</form:content>
+			</form:SimpleForm>
+		</semantic:content>
+	</semantic:FullscreenPage>
+</mvc:View>

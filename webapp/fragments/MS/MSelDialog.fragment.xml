@@ -1,0 +1,65 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout">
+	<Dialog title="{i18n>MS_NOS}" draggable="true" contentWidth="60%" contentHeight="auto">
+		<VBox>
+			<HBox width="100%">
+				<VBox width="100%">
+					<SearchField placeholder="{i18n>MS_SEARCH}" value="{SelectDisplay>/sSearchMSel}" search="_handleMSelValueHelpSearch"/>
+				</VBox>
+				<VBox width="100%">
+					<SearchField placeholder="{i18n>VENDOR_SEARCH}" value="{SelectDisplay>/sSearchvendor}" search="_handleMSelValueHelpSearch"/>
+				</VBox>
+			</HBox>
+			<ScrollContainer height="20rem" vertical="true">
+				<Table items="{/MSelF4Set}" backgroundDesign="Transparent" width="auto" growing="true" growingThreshold="20" growingScrollToLoad="true"
+					fixedLayout="false">
+					<columns>
+						<Column hAlign="Left">
+							<header>
+								<Label text="{i18n>MAT_SEL_NO}" design="Bold"/>
+							</header>
+						</Column>
+						<Column hAlign="Left" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+							<header>
+								<Label text="{i18n>VENDOR}" design="Bold"/>
+							</header>
+						</Column>
+						<Column hAlign="Left" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+							<header>
+								<Label text="{i18n>PO}" design="Bold"/>
+							</header>
+						</Column>
+						<Column hAlign="Left" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+							<header>
+								<Label text="{i18n>CREATEDBY}" design="Bold"/>
+							</header>
+						</Column>
+						<Column hAlign="Left" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+							<header>
+								<Label text="{i18n>STATUS}" design="Bold"/>
+							</header>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem type="Active" press="_handleMSelValueHelpConfirm">
+							<cells>
+								<Text text="{MSelNo}"/>
+								<Text text="{Vendor}"/>
+								<Text text="{PoNum}"/>
+								<Text text="{CreatedBy}"/>
+								<!--<Text text="{=${Status} === '' ? 'Saved' : ${Status}}"/>-->
+								<Text text="{=${StatusText} === '' ? 'Saved' : ${StatusText}}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</ScrollContainer>
+		</VBox>
+		<endButton>
+			<Button text="{i18n>CANCEL}" icon="sap-icon://sys-cancel" press="_handleMSelValueHelpClose" type="Reject">
+				<layoutData>
+					<layout:GridData span="L4 M4 S6"/>
+				</layoutData>
+			</Button>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="{i18n>VENDOR_LIST}" class="sapUiPopupWithPadding" items="{/MSVendorsListSet}" search="_handleVendorValueHelpSearch"
+		confirm="_handleVendorValueHelpClose" cancel="_handleVendorValueHelpClose">
+		<StandardListItem title="{Name}" description="{Vendor}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

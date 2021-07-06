@@ -1,0 +1,70 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:t="sap.ui.table">
+	<t:Table rows="{objectView>/MSApproversListSet}" alternateRowColors="true" visibleRowCountMode="Interactive" minAutoRowCount="3"
+		visibleRowCount="5" selectionMode="None">
+		<!--visibleRowCount="{objectView>/tableVisibleRowCount}" fixedColumnCount="5" visible="{=${objectView>/isApprovalAgentsTabVisible} === true? false : true}"-->
+		<t:extension>
+			<Toolbar class="sapMTBHeader-CTX">
+				<Title text="{i18n>APPR_LIST}" class="ItemTableTitleClass" level="H6"/>
+				<ToolbarSpacer/>
+			</Toolbar>
+		</t:extension>
+		<t:columns>
+			<t:Column flexible="true" resizable="true" width="4em">
+				<Text text="{i18n>LEVEL}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>Level}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="15em">
+				<Text text="{i18n>LVL_NAME}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>LevelName}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="7em">
+				<Text text="{i18n>APPROVER}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>Approver}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="15em">
+				<Text text="{i18n>APPR_NAME}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>ApproverName}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="6.5em">
+				<Text text="{i18n>APPR_DATE}" wrapping="true"/>
+				<t:template>
+					<Text text="{path: 'objectView>Date', formatter:'.formatter.formatDate'}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="6em">
+				<Text text="{i18n>APPR_TIME}" wrapping="true"/>
+				<t:template>
+					<Text text="{path: 'objectView>Time', formatter: '.formatter.formatTime'}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="15em">
+				<Text text="{i18n>COMMENTS}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>Comments}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="11.8em">
+				<Text text="{i18n>STATUS}" wrapping="true"/>
+				<t:template>
+					<HBox>
+						<core:Icon src="{path: 'objectView>StatusID', formatter: '.formatter.setStatusIconSrc'}" width="30px" class="statusIconClass"
+							color="{path: 'objectView>StatusID', formatter: '.formatter.setStatusIconColor'}"/>
+						<Text text="{objectView>StatusText}" class="statusTextClass">
+							<customData>
+								<core:CustomData key="colorClass" value="{ path:'objectView>StatusID', formatter: '.formatter.setStatusColors'}" writeToDom="true"/>
+							</customData>
+						</Text>
+					</HBox>
+				</t:template>
+			</t:Column>
+		</t:columns>
+	</t:Table>
+</core:FragmentDefinition>

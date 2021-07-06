@@ -1,0 +1,156 @@
+<mvc:View controllerName="ps.dewa.makelist.MakeList.controller.Create" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic">
+	<!--xmlns:footerbar="sap.ushell.ui.footerbar"-->
+	<semantic:FullscreenPage title="{i18n>worklistTitle}" showNavButton="true" navButtonPress="onBack" showFooter="false" class="pageTitleClass">
+		<!--id="page" headerPinnable="false" toggleHeaderOnTitleClick="false"-->
+		<!--<semantic:titleHeading>-->
+		<!--	<Title text="{i18n>worklistTitle}"/>-->
+		<!--</semantic:titleHeading>-->
+		<semantic:content>
+			<form:SimpleForm editable="true" layout="ResponsiveGridLayout" title="{i18n>SFORMTITL}" labelSpanXL="3" labelSpanL="3" labelSpanM="3"
+				labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="3" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+				singleContainerFullSize="false">
+				<form:content>
+					<Label text="{i18n>PROJECT}" required="true"/>
+					<Input value="{worklistView>/ProjectID}" valueState="{worklistView>/projectInputState}" placeholder="{i18n>PROJNAME_SEARCH}"
+						showValueHelp="true" valueHelpRequest="handleProjectValueHelp" description="{worklistView>/projectName}" liveChange="onProjectChange"
+						submit="getProjectDescription">
+						<!--showSuggestion="true" suggestionItems="{worklistView>/ProjectF4Set}" suggest="handleProjectSuggest"-->
+						<!--suggestionItemSelected="handleProjectSuggestionSelected"-->
+						<!--<suggestionItems>
+							<core:ListItem text="{worklistView>ProjectName}" additionalText="{worklistView>ProjectID}"/>
+						</suggestionItems>-->
+					</Input>
+					<Label text="{i18n>PROJ_TYPE}"/>
+					<Input value="{worklistView>/ProjectType}" maxLength="24" placeholder="{i18n>PTYPE_SELECT}" description="{worklistView>/ProjectText}"
+						valueHelpOnly="false" showValueHelp="true" valueHelpRequest="handleProjTypeValueHelp" liveChange="onPTypeChange"
+						submit="getProjTypeDescription">
+						<!--<suggestionItems>-->
+						<!--	<core:ListItem text="{worklistView>ProjTypeText}" additionalText="{worklistView>ProjType}"/>-->
+						<!--</suggestionItems>-->
+					</Input>
+					<!--<Label text="{i18n>WBS_ELE}"/>
+					<Input value="{worklistView>/wbs}" maxLength="24"  placeholder="Enter WBS Element..." description="{worklistView>/wbsText}"/>-->
+					<!--<Label text="{i18n>WBS_ELE}"/>
+					<Input value="{worklistView>/wbs}" maxLength="24" placeholder="Enter WBS Element..." showSuggestion="true"
+						description="{worklistView>/wbsText}" suggestionItems="{worklistView>/WbsF4Set}" suggest="handleWbsSuggest"
+						suggestionItemSelected="handleWbsSuggestionSelected" showValueHelp="true" valueHelpRequest="handleWbsValueHelp" liveChange="onWbsChange">
+						<suggestionItems>
+							<core:ListItem text="{worklistView>WbsText}" additionalText="{worklistView>WbsID}"/>
+						</suggestionItems>
+					</Input>-->
+					<!--valueState="{worklistView>/wbsInputState}"-->
+					<!--<Label text="{i18n>PO}"/>
+					<Input value="{worklistView>/poNum}" type="Number" maxLength="10"  placeholder="Enter PO Number..."/>-->
+					<!--valueState="{worklistView>/poInputState}"-->
+					<Label text="{i18n>VENDOR}"/>
+					<Input value="{worklistView>/VendorID}" maxLength="24" placeholder="{i18n>VENDORNAME_SEARCH}" showSuggestion="true"
+						description="{worklistView>/VendorName}" suggestionItems="{worklistView>/VendorF4Set}" suggest="handleVendorSuggest"
+						suggestionItemSelected="handleVendorSuggestionSelected" showValueHelp="true" valueHelpRequest="handleVendorValueHelp"
+						liveChange="onVendorChange" required="true" valueState="{worklistView>/vendorInputState}" enabled="{worklistView>/bVendorEnabled}"
+						submit="getVendorDescription">
+						<suggestionItems>
+							<core:ListItem text="{worklistView>VendorName}" additionalText="{worklistView>VendorID}"/>
+						</suggestionItems>
+					</Input>
+					<Label/>
+					<Button text="Back" icon="sap-icon://back" press="onBack">
+						<layoutData>
+							<l:GridData span="XL1 L2 M2 S4"/>
+						</layoutData>
+					</Button>
+					<!--<Button text="Display/Edit" press="goToDisplayView">
+						<layoutData>
+							<l:GridData span="XL1 L2 M2 S4"/>
+						</layoutData>
+					</Button>-->
+					<Button text="{i18n>CREATE_BUTTON}" type="Emphasized" press="onPressDisplayList" enabled="{worklistView>/bCreateButtonEnabled}">
+						<layoutData>
+							<l:GridData span="XL1 L2 M2 S4"/>
+						</layoutData>
+					</Button>
+				</form:content>
+			</form:SimpleForm>
+			<!--<form:SimpleForm editable="true" backgroundDesign="Transparent">
+				<Label text="{i18n>PROJECT}" required="true"/>
+				<Input value=""/>
+				<Label text="{i18n>PO}"/>
+				<Input value=""/>
+				<Label text="{i18n>WBS}"/>
+				<Input value=""/>
+			</form:SimpleForm>-->
+			<!--<l:BlockLayout>
+				<l:BlockLayoutRow>
+					<l:BlockLayoutCell title="Input to display MakeList"></l:BlockLayoutCell>
+				</l:BlockLayoutRow>
+			</l:BlockLayout>-->
+			<!--<FlexBox height="100%" alignItems="Center" justifyContent="Center">
+				<items>
+					<HBox>
+						<Label required="true" text="{i18n>PROJECT}"/>
+						<Input value=""/>
+					</HBox>
+					<HBox>
+						<Label text="{i18n>PO}"/>
+						<Input value=""/>
+					</HBox>
+					<HBox>
+						<Label text="{i18n>WBS}"/>
+						<Input value=""/>
+					</HBox>
+				</items>
+			</FlexBox>-->
+			<!--<Table
+				id="table"
+				width="auto"
+				items="{
+					path: '/MLHeaderSet',
+					sorter: {
+						path: 'ProjNo',
+						descending: false
+					}
+				}"
+				noDataText="{worklistView>/tableNoDataText}"
+				busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+				growing="true"
+				growingScrollToLoad="true"
+				updateFinished="onUpdateFinished">
+
+				<headerToolbar>
+					<Toolbar>
+						<Title id="tableHeader" text="{worklistView>/worklistTableTitle}"/>
+						<ToolbarSpacer />
+						<SearchField
+							id="searchField"
+							tooltip="{i18n>worklistSearchTooltip}"
+							search="onSearch"
+							width="auto">
+						</SearchField>
+					</Toolbar>
+				</headerToolbar>
+
+				<columns>
+					<Column id="nameColumn">
+						<Text text="{i18n>tableNameColumnTitle}" id="nameColumnTitle"/>
+					</Column>
+					<Column id="unitNumberColumn" hAlign="End">
+						<Text text="{i18n>tableUnitNumberColumnTitle}" id="unitNumberColumnTitle"/>
+					</Column>
+				</columns>
+
+				<items>
+					<ColumnListItem
+						type="Navigation"
+						press="onPress">
+						<cells>
+							<ObjectIdentifier
+								title="{ProjNo}"/>
+							<ObjectNumber
+								unit="{CreatedBy}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>-->
+		</semantic:content>
+	</semantic:FullscreenPage>
+</mvc:View>

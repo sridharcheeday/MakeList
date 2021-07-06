@@ -1,0 +1,239 @@
+<mvc:View controllerName="ps.dewa.makelist.MakeList.controller.MatSelItems" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:uxap="sap.uxap" xmlns:form="sap.ui.layout.form"
+	xmlns:unf="sap.ui.unified">
+	<!--xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:html="http://www.w3.org/1999/xhtml"-->
+	<Page showNavButton="true" navButtonPress="onNavBack" showFooter="true" class="pageTitleClass"
+		title="{= ${objectView>/WiId} === undefined ? ${objectView>/mode} === 'C' ? ${i18n>TIT_CREATE_MS} : ${objectView>/mode} === 'E' ? ${i18n>TIT_EDIT_MS} : ${i18n>TIT_DISPLAY_MS} : ${i18n>TIT_APPROVE_MS}}">
+		<content>
+			<uxap:ObjectPageLayout id="idPageLayout" >
+				<!--upperCaseAnchorBar="false" enableLazyLoading="true" useIconTabBar="true" navigate="onChangeSections" sectionChange="onChangeSections"-->
+				<uxap:headerContent>
+					<ObjectHeader responsive="true" fullScreenOptimized="false" iconAlt="{Name}" title="{VendorDesc} ({objectView>/vendor})" titleActive="false"
+						backgroundDesign="Translucent" number="#{objectView>/MSelNo}" class="objectNumberClass">
+						<!--intro="{objectView>/vendor}"-->
+						<statuses>
+							<ObjectStatus text="{= ${StatusText} !== '' ? ${StatusText} : ${objectView>/MSelNo} === '0000000000' ? 'New' : 'Saved'}"
+								state="{ path:'Status', formatter: '.formatter.setHeaderStatusState'}" class="sapMObjectStatusLarge objectStatusClass"/>
+						</statuses>
+						<attributes>
+							<!--text="{= ${objectView>/MSelNo} === '' ? '0000000000' : {objectView>/MSelNo}}"-->
+							<!--<ObjectAttribute title="{i18n>MAT_SEL_DOC_LBL}" text="{objectView>/MSelNo}" class="AttributeTextClass headerStatusTextClass "/>-->
+							<!--<ObjectAttribute title="{i18n>STATUS}"
+								text="{= ${StatusText} !== '' ? ${StatusText} : ${objectView>/MSelNo} === '0000000000' ? 'New' : 'Saved'}"
+								class="AttributeTextClass headerStatusTextClass ">
+								<customData>
+									<core:CustomData key="colorClass" value="{ path:'Status', formatter: '.formatter.setHeaderStatusColors'}" writeToDom="true"/>
+								</customData>
+							</ObjectAttribute>-->
+							<ObjectAttribute title="{i18n>PO}" text="{PoNum}" class="AttributeTextClass headerStatusTextClass "/>
+							<ObjectAttribute title="{i18n>CREATE_DATE}" text="{path: 'CreatedDate', formatter:'.formatter.formatDate'}"
+								class="AttributeTextClass headerStatusTextClass"/>
+							<ObjectAttribute title="{i18n>CREATEDBY}" text="{CreatedBy}{=${CreatedName} === '' ? '' : ' - ' + ${CreatedName}}"
+								class="AttributeTextClass headerStatusTextClass "/>
+							<ObjectAttribute title="{i18n>EDITEDBY}" text="{EditBy}{=${EditName} === '' ? '' : ' - ' + ${EditName}}"
+								class="AttributeTextClass headerStatusTextClass "/>
+						</attributes>
+					</ObjectHeader>
+				</uxap:headerContent>
+				<uxap:sections>
+					<uxap:ObjectPageSection id="idItemsTab" titleUppercase="false" title="Items">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection titleUppercase="false">
+								<ui:Table id="idTable" rows="{objectView>/MSHeadSet/MSHeaderItems}" selectionMode="Single" ariaLabelledBy="title"
+									selectionBehavior="RowOnly" visibleRowCountMode="Interactive" alternateRowColors="true" enableCellFilter="true" enableColumnFreeze="true"
+									enableColumnReordering="true">
+									<!--<ui:rowSettingsTemplate>-->
+									<!--	<ui:RowSettings highlight="{objectView>Status}"/>-->
+									<!--</ui:rowSettingsTemplate>-->
+									<ui:extension>
+										<OverflowToolbar>
+											<Title text="PO Items ({objectView>/iItemCount})" class="ItemTableTitleClass" level="H6"/>
+											<ToolbarSpacer/>
+											<ToggleButton text="{= ${objectView>/selectAllFAT} === true ? 'Select All FAT' : 'Deselect All FAT'}" press="onSelectAllFAT"
+												enabled="{objectView>/bSave}" icon="{= ${objectView>/selectAllFAT} === true ? 'sap-icon://complete' : 'sap-icon://border'}"
+												pressed="{objectView>/selectFATPressed}" class="toggleButtonClass"/>
+											<ToggleButton text="{= ${objectView>/selectAllSAT} === true ? 'Select All SAT' : 'Deselect All SAT'}" press="onSelectAllSAT"
+												enabled="{objectView>/bSave}" icon="{= ${objectView>/selectAllSAT} === true ? 'sap-icon://complete' : 'sap-icon://border'}"
+												pressed="{objectView>/selectSATPressed}" class="toggleButtonClass"/>
+											<Button text="{i18n>BTN_CLR_FILTER}" icon="sap-icon://clear-filter" press="onClearFilters" type="Emphasized"/>
+											<Button text="{i18n>BTN_RESET_SORT}" icon="sap-icon://reset" press="onClearSortings" type="Emphasized"/>
+											<!--<Button icon="sap-icon://refresh" press="onRefresh" tooltip="Refresh" type="Emphasized"/>-->
+											<Button icon="sap-icon://download" press="onDownload" tooltip="Download" type="Emphasized"/>
+										</OverflowToolbar>
+									</ui:extension>
+									<ui:columns>
+										<ui:Column width="5rem" filterProperty="PoItem" defaultFilterOperator="EQ" showSortMenuEntry="true" sortProperty="PoItem">
+											<Text text="{i18n>COL_ITM_NO}" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<Text text="{objectView>PoItem}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="7rem" filterProperty="PO" showSortMenuEntry="true" sortProperty="Matnr">
+											<Text text="{i18n>COL_MAT}" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<Text text="{objectView>Matnr}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" filterProperty="MatDesc" showSortMenuEntry="true" sortProperty="MatDesc">
+											<Text text="{i18n>COL_MAT_DESC}" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<Text text="{objectView>MatDesc}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="6rem" filterProperty="MatGrp" showSortMenuEntry="true" sortProperty="MatGrp">
+											<Text text="{i18n>COL_MAT_GRP}" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<Text text="{objectView>MatGrp}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" filterProperty="MatGrpDesc" showSortMenuEntry="true" sortProperty="MatGrpDesc">
+											<Text text="{i18n>COL_MAT_GRP_DESC}" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<Text text="{objectView>MatGrpDesc}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="10rem" filterProperty="Manufacturer" showSortMenuEntry="true" sortProperty="Manufacturer">
+											<Text text="{i18n>COL_MANUFACTURER}" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<Input value="{objectView>Manufacturer}" enabled="{objectView>/bSave}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="12rem" filterProperty="CountryName" showSortMenuEntry="true" sortProperty="CountryName">
+											<Text text="{i18n>COL_COUNTRY}" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<Input value="{objectView>Country}" description="{objectView>CountryName}" showValueHelp="true" valueHelpOnly="true"
+													valueHelpRequest="handleCountryValueHelp" fieldWidth="30%" enabled="{objectView>/bSave}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="8rem" filterProperty="Quantity" showSortMenuEntry="true" sortProperty="Quantity" hAlign="End">
+											<Text text="{i18n>COL_QTY}" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<Input value="{objectView>Quantity}" description="{objectView>UOM}" fieldWidth="80%" type="Number" textAlign="Right"
+													enabled="{objectView>/bSave}"/>
+											</ui:template>
+										</ui:Column>
+										<!--<ui:Column width="6rem" filterProperty="UOM" showSortMenuEntry="true" sortProperty="UOM">
+											<Text text="Unit of Measure" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<Text text="{objectView>UOM}"/>
+											</ui:template>
+										</ui:Column>-->
+										<ui:Column width="3.2rem" filterProperty="DelInd" showSortMenuEntry="true" sortProperty="DelInd">
+											<Text text="{i18n>COL_DEL_IND}" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<CheckBox selected="{=${objectView>DelInd} === 'X' ? true : false}" select="onSelectDelIndCheckBox"
+													enabled="{parts: [{path: 'objectView>/bSave'},{path: 'objectView>FAT'},{path: 'objectView>SAT'}], formatter:'.formatter.delIndProperty'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="3.2rem" filterProperty="FAT" showSortMenuEntry="true" sortProperty="FAT">
+											<Text text="{i18n>COL_FAT}" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<CheckBox selected="{=${objectView>FAT} === 'X' ? true : false}" select="onSelectFatCheckBox"
+													enabled="{parts: [{path: 'objectView>/bSave'},{path: 'objectView>DelInd'}], formatter:'.formatter.fatsatProperty'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="3.2rem" filterProperty="SAT" showSortMenuEntry="true" sortProperty="SAT">
+											<Text text="{i18n>COL_SAT}" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<CheckBox selected="{=${objectView>SAT} === 'X' ? true : false}" select="onSelectSatCheckBox"
+													enabled="{parts: [{path: 'objectView>/bSave'},{path: 'objectView>DelInd'}], formatter:'.formatter.fatsatProperty'}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="7rem" filterProperty="DelivDate" showSortMenuEntry="true" sortProperty="DelivDate">
+											<Text text="{i18n>COL_DELV_DATE}" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<Text text="{path: 'objectView>DelivDate', formatter:'.formatter.formatDate'}"/>
+											</ui:template>
+										</ui:Column>
+										<!--<ui:Column width="9rem" filterProperty="NetPrice" showSortMenuEntry="true" sortProperty="NetPrice" hAlign="End">
+											<Text text="Net Price" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<unf:Currency value="{path: 'objectView>NetPrice', formatter:'.formatter.formatAmount'}" currency="{objectView>Currency}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="7rem" filterProperty="GrossValue" showSortMenuEntry="true" sortProperty="GrossValue" hAlign="End">
+											<Text text="Gross Value" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<Text text="{objectView>GrossValue}"/>
+											</ui:template>
+										</ui:Column>
+										<ui:Column width="7rem" filterProperty="NetValue" showSortMenuEntry="true" sortProperty="NetValue" hAlign="End">
+											<Text text="Net Value" wrapping="true" class="ColumnHeadTextClass"/>
+											<ui:template>
+												<Text text="{objectView>NetValue}"/>
+											</ui:template>
+										</ui:Column>-->
+									</ui:columns>
+								</ui:Table>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection titleUppercase="false" title="{i18n>APPROVERS}" visible="{objectView>/isApprovalTabVisible}">
+						<!--titleLevel="Auto"-->
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection titleUppercase="false">
+								<core:Fragment fragmentName="ps.dewa.makelist.MakeList.fragments.MS.ApproversTable" type="XML"/>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection id="idAgentsDispTab" titleUppercase="false" title="{i18n>APPROVERS}"
+						visible="{objectView>/isApprovalAgentsTabVisible}">
+						<!--titleLevel="Auto"-->
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection titleUppercase="false">
+								<core:Fragment fragmentName="ps.dewa.makelist.MakeList.fragments.MS.ApproverAgentsTable" type="XML"/>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection id="idAgentsEditTab" titleUppercase="false" title="{i18n>APPROVERS}"
+						visible="{objectView>/isApprovalAgentsEditTabVisible}">
+						<!--titleLevel="Auto"-->
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection titleUppercase="false">
+								<core:Fragment fragmentName="ps.dewa.makelist.MakeList.fragments.MS.ApproverAgentsEditTable" type="XML"/>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection titleUppercase="false" title="{i18n>TIT_APPR_LOG}" visible="{objectView>/isApprovalLogTabVisible}">
+						<!--titleLevel="Auto"-->
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection titleUppercase="false">
+								<core:Fragment fragmentName="ps.dewa.makelist.MakeList.fragments.MS.ApproversLogTable" type="XML"/>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection titleUppercase="false" title="{i18n>TIT_CHANGE_LOG}" visible="{objectView>/isChangeLogTabVisible}">
+						<!--titleLevel="Auto"-->
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection titleUppercase="false">
+								<core:Fragment fragmentName="ps.dewa.makelist.MakeList.fragments.MS.ChangeLogTable" type="XML"/>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection titleUppercase="false" title="{i18n>ATTACHMENTS}">
+						<!--titleLevel="Auto"-->
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection titleUppercase="false">
+								<core:Fragment fragmentName="ps.dewa.makelist.MakeList.fragments.MS.Attachments" type="XML"/>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+				</uxap:sections>
+			</uxap:ObjectPageLayout>
+		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button text="{i18n>BTN_EDIT}" type="Emphasized" press="onEdit" visible="{objectView>/bVisibleEditButton}"/>
+				<Button text="{i18n>BTN_SAVE}" press="onSaveAlert" type="Accept" visible="{objectView>/bVisibleSaveButton}"/>
+				<Button text="{i18n>CANCEL}" type="Reject" press="onCancel" visible="{objectView>/bVisibleCancelButton}"/>
+				<Button text="{=${Status} === 'CLR' ? 'Re-Submit' : ${objectView>/mode} !== 'D' ? 'Save &amp; Submit' : 'Submit'}" type="Accept"
+					press="onSubmit" visible="{objectView>/bVisibleSubmitButton}"/>
+				<Button text="{i18n>BTN_APPROVE}" type="Accept" press="onApprove" visible="{objectView>/bVisibleFooterButtons}"/>
+				<Button text="{i18n>BTN_RETURN}" type="Reject" press="onReturn" visible="{objectView>/bVisibleFooterButtons}"/>
+				<Button text="{i18n>BTN_REJECT}" type="Reject" press="onReject" visible="{=${CancelDocFlag} === 'X' ? true : false}"/>
+				<Button text="{i18n>NXT_LEVEL}" type="Emphasized" press="onNextLevel" visible="{objectView>/bVisibleNextLevelButton}"/>
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>

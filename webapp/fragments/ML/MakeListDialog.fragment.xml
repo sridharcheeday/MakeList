@@ -1,0 +1,75 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout">
+	<!--<SelectDialog title="MakeList Numbers" class="sapUiPopupWithPadding" items="{/MakeListF4Set}" search="_handleMakeNoValueHelpSearch"
+		confirm="_handleMakeNoValueHelpClose" cancel="_handleMakeNoValueHelpClose">
+		<StandardListItem title="{MakeNo}"/>
+	</SelectDialog>-->
+	<Dialog title="{i18n>ML_NOS}" draggable="true" contentWidth="60%" contentHeight="auto">
+		<VBox>
+			<HBox width="100%">
+				<VBox width="100%">
+					<SearchField placeholder="{i18n>ML_SEARCH}" value="{displayModel>/sSearchML}" search="_handleMakeNoValueHelpSearch"/>
+				</VBox>
+				<VBox width="100%">
+					<SearchField placeholder="{i18n>PROJ_SEARCH}" value="{displayModel>/sSearchProj}" search="_handleMakeNoValueHelpSearch"/>
+				</VBox>
+			</HBox>
+			<ScrollContainer height='20rem' vertical='true'>
+				<Table items="{/MakeListF4Set}" backgroundDesign="Transparent" width="auto" growing="true" growingThreshold="20" growingScrollToLoad="true"
+					fixedLayout="false">
+					<columns>
+						<Column hAlign="Left">
+							<header>
+								<Label text="{i18n>ML_NO}" design="Bold"/>
+							</header>
+						</Column>
+						<Column hAlign="Left" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+							<header>
+								<Label text="{i18n>PROJ_NO}" design="Bold"/>
+							</header>
+						</Column>
+						<Column hAlign="Left" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+							<header>
+								<Label text="{i18n>PROJ_TYPE}" design="Bold"/>
+							</header>
+						</Column>
+						<Column hAlign="Left" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+							<header>
+								<Label text="{i18n>VENDOR}" design="Bold"/>
+							</header>
+						</Column>
+						<Column hAlign="Left" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+							<header>
+								<Label text="{i18n>CREATEDBY}" design="Bold"/>
+							</header>
+						</Column>
+						<Column hAlign="Left" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+							<header>
+								<Label text="{i18n>STATUS}" design="Bold"/>
+							</header>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem type="Active" press="_handleMakeNoValueHelpConfirm">
+							<cells>
+								<Text text="{MakeNo}"/>
+								<Text text="{ProjNo}"/>
+								<Text text="{ProjType}"/>
+								<Text text="{Vendor}"/>
+								<Text text="{CreatedBy}"/>
+								<!--<Text text="{=${Status} === '' ? 'Saved' : ${Status}}"/>-->
+								<Text text="{=${StatusText} === '' ? 'Saved' : ${StatusText}}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</ScrollContainer>
+		</VBox>
+		<endButton>
+			<Button text="{i18n>CANCEL}" icon="sap-icon://sys-cancel" press="_handleMakeNoValueHelpClose" type="Reject">
+				<layoutData>
+					<layout:GridData span="L4 M4 S6"/>
+				</layoutData>
+			</Button>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

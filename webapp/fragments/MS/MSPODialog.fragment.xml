@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="{i18n>PO_LIST}" class="sapUiPopupWithPadding" items="{SelectCreate>/MSPOF4Set}" search="_handlePOValueHelpSearch"
+		confirm="_handlePOValueHelpClose" cancel="_handlePOValueHelpClose">
+		<StandardListItem title="{SelectCreate>PoNum}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="{i18n>COUNTRY_LIST}" class="sapUiPopupWithPadding" items="{objectView>/CountriesSet}" search="_handleCountryValueHelpSearch"
+		confirm="_handleCountryValueHelpClose" cancel="_handleCountryValueHelpClose">
+		<StandardListItem title="{objectView>CountryName}" description="{objectView>CountryID}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="{i18n>USER_LIST}" class="sapUiPopupWithPadding" items="{objectView>/ProjectUserGroupSet}"
+		search="_handleProjUserGrpValueHelpSearch" confirm="_handleProjUserGrpValueHelpClose" cancel="_handleProjUserGrpValueHelpClose">
+		<StandardListItem title="{objectView>UserGroupName}" description="{objectView>UserGroup}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,59 @@
+<edmx:Edmx
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+    xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="ZPS_MLIST_ODATA_MAKE_LIST_SRV" xml:lang="en" sap:schema-version="1">
+            <EntityType Name="MLHeader" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="MlistNo"/>
+                    <PropertyRef Name="ProjNo"/>
+                </Key>
+                <Property Name="MlistNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="MakeList"/>
+                <Property Name="ProjNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:label="Project def."/>
+                <Property Name="PoNum" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Purchasing Doc."/>
+                <Property Name="WbsNumber" Type="Edm.String" MaxLength="24" sap:unicode="false" sap:label="WBS Element"/>
+                <Property Name="ProjDesc" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:label="Description"/>
+                <Property Name="Vendor" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Vendor"/>
+                <Property Name="CreatedDate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Created On"/>
+                <Property Name="CreatedBy" Type="Edm.String" MaxLength="12" sap:unicode="false" sap:label="Created By"/>
+                <Property Name="EditBy" Type="Edm.String" MaxLength="12" sap:unicode="false" sap:label="Changed by"/>
+                <Property Name="SectionCode" Type="Edm.String" MaxLength="7" sap:unicode="false" sap:label="User Section Code"/>
+            </EntityType>
+            <EntityType Name="MLItems" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="MlistNo"/>
+                    <PropertyRef Name="ProjNo"/>
+                    <PropertyRef Name="PoNum"/>
+                </Key>
+                <Property Name="MlistNo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="MakeList" sap:filterable="false"/>
+                <Property Name="ProjNo" Type="Edm.String" Nullable="false" MaxLength="24" sap:unicode="false" sap:label="Project def." sap:filterable="false"/>
+                <Property Name="PoNum" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Purchasing Doc." sap:filterable="false"/>
+                <Property Name="WbsNumber" Type="Edm.String" MaxLength="24" sap:unicode="false" sap:label="WBS Element" sap:filterable="false"/>
+                <Property Name="PoItem" Type="Edm.String" MaxLength="5" sap:unicode="false" sap:label="Item" sap:filterable="false"/>
+                <Property Name="Matnr" Type="Edm.String" MaxLength="18" sap:unicode="false" sap:label="Material" sap:filterable="false"/>
+                <Property Name="MatDesc" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:label="Description" sap:filterable="false"/>
+                <Property Name="Subitem" Type="Edm.String" MaxLength="18" sap:unicode="false" sap:label="Component" sap:filterable="false"/>
+                <Property Name="SubitemDesc" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:label="Description" sap:filterable="false"/>
+                <Property Name="DelInd" Type="Edm.String" MaxLength="1" sap:unicode="false" sap:label="Deletion ind." sap:filterable="false"/>
+            </EntityType>
+            <Association Name="MLHeaderItems" sap:content-version="1">
+                <End Type="ZPS_MLIST_ODATA_MAKE_LIST_SRV.MLHeader" Multiplicity="1" Role="FromRole_MLHeaderItems"/>
+                <End Type="ZPS_MLIST_ODATA_MAKE_LIST_SRV.MLItems" Multiplicity="*" Role="ToRole_MLHeaderItems"/>
+            </Association>
+            <EntityContainer Name="ZPS_MLIST_ODATA_MAKE_LIST_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="MLHeaderSet" EntityType="ZPS_MLIST_ODATA_MAKE_LIST_SRV.MLHeader" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="MLItemsSet" EntityType="ZPS_MLIST_ODATA_MAKE_LIST_SRV.MLItems" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <AssociationSet Name="MLHeaderItems_AssocSet" Association="ZPS_MLIST_ODATA_MAKE_LIST_SRV.MLHeaderItems" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="MLHeaderSet" Role="FromRole_MLHeaderItems"/>
+                    <End EntitySet="MLItemsSet" Role="ToRole_MLHeaderItems"/>
+                </AssociationSet>
+            </EntityContainer>
+            <atom:link
+                xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="./sap/ZPS_MLIST_ODATA_MAKE_LIST_SRV/$metadata"/>
+                <atom:link
+                    xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="./sap/ZPS_MLIST_ODATA_MAKE_LIST_SRV/$metadata"/>
+                </Schema>
+            </edmx:DataServices>
+        </edmx:Edmx>

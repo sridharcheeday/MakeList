@@ -1,0 +1,283 @@
+<mvc:View controllerName="ps.dewa.makelist.MakeList.controller.Material" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:ui="sap.ui.table" xmlns:unf="sap.ui.unified">
+	<!--xmlns:html="http://www.w3.org/1999/xhtml" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable" 
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"-->
+	<Page id="page" title="Project# {materialView>/projNo}" showNavButton="true" navButtonPress="onBack" class="pageTitleClass">
+		<content>
+			<ObjectHeader responsive="true" fullScreenOptimized="false" iconAlt="{materialView>/material}" intro="{materialView>/material}"
+				title="{materialView>/MLSubItemsSet/0/MatDesc}" titleActive="false" backgroundDesign="Translucent">
+				<!--number="{materialView>/ItemQuantity}"-->
+				<!--number="{parts:[{path:'materialView>/ItemQuantity'}, {path:'materialView>/qty'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false}}"-->
+				<attributes>
+					<!--<ObjectAttribute title="{i18n>QUAN}" text="{materialView>/TotalQuantity}"/>-->
+					<!--text="{materialView>/MLSubItemsSet/0/Quantity}"-->
+					<ObjectAttribute title="{i18n>PO}" text="{materialView>/poNum}"/>
+					<ObjectAttribute title="{i18n>PO_ITM}" text="{materialView>/poItem}"/>
+					<ObjectAttribute title="{i18n>PO_ITM_QTY}" text="{materialView>/ItemQuantity}"/>
+					<ObjectAttribute title="{i18n>INSP_LOT}" text="{materialView>/InspLot}"/>
+					<!--<ObjectNumber number="{materialView>/TotalQuantity}"/>-->
+				</attributes>
+			</ObjectHeader>
+			<!--<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="MLSubItemsSet" persistencyKey="SmartFilter_Explored">
+				<smartFilterBar:controlConfiguration>
+					<smartFilterBar:ControlConfiguration key="PoNum">
+						<smartFilterBar:defaultFilterValues>
+							<smartFilterBar:SelectOption low="00000036"></smartFilterBar:SelectOption>
+						</smartFilterBar:defaultFilterValues>
+					</smartFilterBar:ControlConfiguration>
+				</smartFilterBar:controlConfiguration>
+			</smartFilterBar:SmartFilterBar>-->
+			<!--<smartTable:SmartTable id="idSmartTable" entitySet="MLSubItemsSet" tableBindingPath="materialView>/MLSubItemsSet"
+				tableType="ResponsiveTable" useExportToExcel="true" useVariantManagement="false" showVariantManagement="false"
+				useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true"
+				demandPopin="true" header="Material Items" initiallyVisibleFields="Matnr,MatDesc,Quantity" class="sapUiResponsiveContentPadding">-->
+			<!--placeToolbarInTable="true" beforeExport="onBeforeExport" smartFilterId="smartFilterBar"-->
+			<ui:Table id="idMatTable" rows="{materialView>/MLSubItemsSet}" alternateRowColors="true" enableCellFilter="true" enableColumnFreeze="true"
+				enableColumnReordering="true" selectionMode="Single" minAutoRowCount="5" visibleRowCount="10" visibleRowCountMode="Interactive"
+				selectionBehavior="RowOnly" rowActionCount="1">
+				<!-- showColumnVisibilityMenu="true" rowActionCount="1" visibleRowCountMode="Interactive" rowSelectionChange="onDisplayAdditionalInfo" -->
+				<ui:rowActionTemplate>
+					<ui:RowAction>
+						<ui:RowActionItem icon="sap-icon://navigation-right-arrow" type="Navigation" press="onDisplayAdditionalInfo"/>
+					</ui:RowAction>
+				</ui:rowActionTemplate>
+				<ui:extension>
+					<OverflowToolbar>
+						<Title text="PO Sub Items ({materialView>/iItemCount})" class="ItemTableTitleClass" level="H5"/>
+						<ToolbarSpacer/>
+						<Button text="Clear Filters" icon="sap-icon://clear-filter" press="onClearFilters" type="Emphasized"/>
+						<Button text="Reset Sortings" icon="sap-icon://reset" press="onClearSortings" type="Emphasized"/>
+					</OverflowToolbar>
+				</ui:extension>
+				<ui:columns>
+					<ui:Column width="7rem" filterProperty="Matnr" showSortMenuEntry="true" sortProperty="Matnr">
+						<Text text="Material #" wrapping="true" class="ColumnHeadTextClass"/>
+						<ui:template>
+							<!--<Text text="{path: 'materialView>Matnr', formatter:'.formatter.formatMaterial'}"/>-->
+							<Text text="{materialView>Matnr}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column filterProperty="MatDesc" showSortMenuEntry="true" sortProperty="MatDesc">
+						<Text text="Material Description" wrapping="true" class="ColumnHeadTextClass"/>
+						<ui:template>
+							<Text text="{materialView>MatDesc}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="7rem" filterProperty="Quantity" showSortMenuEntry="true" sortProperty="Quantity">
+						<Text text="BOM Qty" wrapping="true" class="ColumnHeadTextClass"/>
+						<ui:template>
+							<Input value="{materialView>Quantity}" change="onChangeBOMQty" enabled="{materialView>/mode}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="6rem">
+						<Text text="Total Qty" wrapping="true" class="ColumnHeadTextClass"/>
+						<ui:template>
+							<Text text="{= Math.round(${materialView>Quantity} * ${materialView>ItemQuantity}).toFixed(2) }"/>
+							<!--<Text text="{parts:[{path: 'materialView>Quantity'}, {path: 'materialView>ItemQuantity'}], formatter: '.formatter.calculateTotalQuantity'}"/>-->
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="5rem" filterProperty="DelInd" showSortMenuEntry="true" sortProperty="DelInd" hAlign="Center">
+						<Text text="Del. Ind." wrapping="true" class="ColumnHeadTextClass"/>
+						<ui:template>
+							<CheckBox selected="{=${materialView>DelInd} === 'X' ? true : false}" select="onSelectDelIndCheckBox"
+								enabled="{parts: [{path: 'materialView>/bSave'},{path: 'materialView>Fat'},{path: 'materialView>Sat'}], formatter:'.formatter.delIndProperty'}"/>
+							<!--enabled="{=${materialView>/mode} === false ? false : ${materialView>Fat} || ${materialView>Fat}}"-->
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="3.5rem" filterProperty="Fat" showSortMenuEntry="true" sortProperty="Fat" hAlign="Center">
+						<Text text="FAT" wrapping="true" class="ColumnHeadTextClass"/>
+						<ui:template>
+							<CheckBox selected="{=${materialView>Fat} === 'X' ? true : false}" select="onSelectFatCheckBox"
+								enabled="{parts: [{path: 'materialView>/bSave'},{path: 'materialView>DelInd'}], formatter:'.formatter.fatsatProperty'}"/>
+							<!--enabled="{=${materialView>/mode} &amp;&amp; {=${materialView>DelInd} === 'X' ? true : false }}"-->
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="3.5rem" filterProperty="Sat" showSortMenuEntry="true" sortProperty="Sat" hAlign="Center">
+						<Text text="SAT" wrapping="true" class="ColumnHeadTextClass"/>
+						<ui:template>
+							<CheckBox selected="{=${materialView>Sat} === 'X' ? true : false}" select="onSelectSatCheckBox"
+								enabled="{parts: [{path: 'materialView>/bSave'},{path: 'materialView>DelInd'}], formatter:'.formatter.fatsatProperty'}"/>
+							<!--enabled="{=${materialView>/mode} &amp;&amp; {=${materialView>DelInd} === 'X' ? true : false }}"-->
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem" filterProperty="Make" showSortMenuEntry="true" sortProperty="Make">
+						<Text text="Make" wrapping="true" class="ColumnHeadTextClass"/>
+						<ui:template>
+							<Input value="{materialView>Make}" enabled="{materialView>/bSave}"/>
+						</ui:template>
+					</ui:Column>
+					<ui:Column width="8rem" filterProperty="Drawing" showSortMenuEntry="true" sortProperty="Drawing">
+						<Text text="Drawing #" wrapping="true" class="ColumnHeadTextClass"/>
+						<ui:template>
+							<Input value="{materialView>Drawing}" enabled="{materialView>/bSave}"/>
+						</ui:template>
+					</ui:Column>
+					<!--<ui:Column width="5rem" hAlign="Center">
+						<Text text="Attach." wrapping="true" class="ColumnHeadTextClass"/>
+						<ui:template>
+							<core:Icon src="sap-icon://pdf-attachment" press="onDisplayAttachment" visible="{materialView>Link}" color="#FF0000"/>
+						</ui:template>
+					</ui:Column>-->
+					<!--<ui:Column width="5.5rem" hAlign="Center">
+						<Text text="Addl. Info" wrapping="true" class="ColumnHeadTextClass"/>
+						<ui:template>
+							<core:Icon src="sap-icon://message-information" press="onDisplayAdditionalInfo" color="Blue" tooltip="View Additional Information"/>
+						</ui:template>
+					</ui:Column>-->
+					<!--<CheckBox selected="{ path: 'Heavy', type: 'sap.ui.model.type.String' }"/>-->
+				</ui:columns>
+			</ui:Table>
+			<Panel visible="{materialView>/bAddlInfoPanelVisible}" headerText="Additional Information" expandable="false" expanded="true">
+				<form:SimpleForm title="{materialView>/AddlInfo/MatDesc}" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="4" labelSpanM="6"
+					labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="3" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="2" columnsM="2"
+					singleContainerFullSize="false" editable="true" class="AddlInfoDialogFormTitle">
+					<form:content>
+						<core:Title text=""/>
+						<Label text="Equipment No"/>
+						<Input value="{materialView>/AddlInfo/EquipNo}" enabled="{materialView>/mode}"/>
+						<Label text="Equipment ID"/>
+						<Input value="{materialView>/AddlInfo/EquipId}" enabled="{materialView>/mode}"/>
+						<Label text="Equipment Description"/>
+						<Input value="{materialView>/AddlInfo/EquipDesc}" enabled="{materialView>/mode}"/>
+						<Label text="Voltage Rate"/>
+						<Input value="{materialView>/AddlInfo/VoltageRate}" enabled="{materialView>/mode}"/>
+						<Label text="Department"/>
+						<Input value="{materialView>/AddlInfo/Department}" enabled="{materialView>/mode}"/>
+						<Label text="Working Hour"/>
+						<Input value="{materialView>/AddlInfo/WorkingHr}" enabled="{materialView>/mode}"/>
+						<Label text="Can Be Common"/>
+						<Input value="{materialView>/AddlInfo/CanBeCommon}" enabled="{materialView>/mode}"/>
+						<Label text="Remarks"/>
+						<Input value="{materialView>/AddlInfo/Remarks}" enabled="{materialView>/mode}"/>
+						<Label text="Population"/>
+						<Input value="{materialView>/AddlInfo/Population}" enabled="{materialView>/mode}"/>
+						<core:Title text=""/>
+						<Label text="Consultant"/>
+						<Input value="{materialView>/AddlInfo/Consultant}" enabled="{materialView>/mode}"/>
+						<Label text="Contractor"/>
+						<Input value="{materialView>/AddlInfo/Contractor}" enabled="{materialView>/mode}"/>
+						<Label text="Custodian"/>
+						<Input value="{materialView>/AddlInfo/Custodian}" enabled="{materialView>/mode}"/>
+						<Label text="Scada Code"/>
+						<Input value="{materialView>/AddlInfo/ScadaCode}" enabled="{materialView>/mode}"/>
+						<Label text="Make Type"/>
+						<Input value="{materialView>/AddlInfo/MakeType}" enabled="{materialView>/mode}"/>
+						<Label text="Make Model No"/>
+						<Input value="{materialView>/AddlInfo/MakeModelNo}" enabled="{materialView>/mode}"/>
+						<Label text="Make Project Type"/>
+						<Input value="{materialView>/AddlInfo/MakeProjType}" enabled="{materialView>/mode}"/>
+						<Label text="Make State"/>
+						<Input value="{materialView>/AddlInfo/MakeState}" enabled="{materialView>/mode}"/>
+						<Label text="Make Supplier"/>
+						<Input value="{materialView>/AddlInfo/MakeSupplier}" enabled="{materialView>/mode}"/>
+					</form:content>
+				</form:SimpleForm>
+			</Panel>
+			<Panel visible="{materialView>/bAttachmentsPanelVisible}" headerText="Attachments" expandable="false" expanded="true">
+				<!--<UploadCollection id="idUploadCollection" maximumFilenameLength="{materialView>/maximumFilenameLength}"
+					maximumFileSize="{materialView>/maximumFileSize}" multiple="true" change="onChange" fileDeleted="onFileDeleted"
+					filenameLengthExceed="onFilenameLengthExceed" fileSizeExceed="onFileSizeExceed" fileType="{materialView>/attachmentFileTypes}"
+					selectionChange="onSelectionChange" typeMissmatch="onTypeMissmatch" uploadComplete="onUploadComplete"
+					beforeUploadStarts="onBeforeUploadStarts" uploadTerminated="onUploadTerminated"
+					items="{ path: 'materialView>/Attachments', templateShareable: false }"
+					uploadUrl="/sap/opu/odata/sap/ZPS_MLIST_ODATA_MAKE_LIST_SRV/MLAttachmentsSet"
+					numberOfAttachmentsText="Uploaded ({materialView>/attachmentsCount})" showSeparators="All" uploadEnabled="{materialView>/uploadEnabled}"
+					uploadButtonInvisible="{=!${materialView>/uploadButtonVisible}}" mode="SingleSelectMaster">
+					<items>
+						<UploadCollectionItem documentId="{materialView>DocGuid}" fileName="{materialView>Filename}" mimeType="{materialView>Mimetype}"
+							thumbnailUrl="{materialView>thumbnailUrl}" url="{materialView>url}" enableEdit="{materialView>/enableEdit}"
+							enableDelete="{materialView>/enableDelete}" visibleDelete="{materialView>/visibleDelete}" visibleEdit="{materialView>/visibleEdit}">
+						</UploadCollectionItem>
+					</items>
+				</UploadCollection>-->
+				<form:SimpleForm editable="true" backgroundDesign="Transparent" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12"
+					labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+					singleContainerFullSize="false">
+					<form:content>
+						<unf:FileUploader id="fileUploader" placeholder="**Select the File" tooltip="Browse to upload the file" typeMissmatch="handleTypeMissmatch"
+							fileType="jpeg,jpg,pdf,txt,pptx,xls,csv,xlsx,ppt,doc,docx,bmp,png,vsd,zip" style="Emphasized" multiple="false"
+							enabled="{materialView>/bUploaderEnabled}"/>
+						<Button id="idUpload" text="Upload" width="50%" type="Accept" press="onUpload" tooltip="Upload a File" icon="sap-icon://upload"
+							enabled="{materialView>/bUploaderEnabled}"/>
+					</form:content>
+				</form:SimpleForm>
+				<List items="{materialView>/Attachments}" growing="true" growingThreshold="5" growingScrollToLoad="true" mode="Delete" delete="onListDelete"
+					updateFinished="onTableUpdateFinished">
+					<StandardListItem title="{materialView>Filename}" type="Active" press="onListItemPressed" description="{materialView>FileSizeTxt}"
+						icon="{materialView>FileIcon}" iconDensityAware="false" iconInset="false"/>
+				</List>
+			</Panel>
+			<!--<Table mode="SingleSelectMaster" growing="true" growingScrollToLoad="true" growingThreshold="20" showSeparators="All"
+				items="{materialView>/MLSubItemsSet}">
+				<columns>
+					<Column width="9rem">
+						<Text text="Material Number" wrapping="true"/>
+					</Column>
+					<Column width="17rem" popinDisplay="Inline" demandPopin="true" minScreenWidth="Desktop">
+						<Text text="Material Description" wrapping="true"/>
+					</Column>
+					<Column width="6rem" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+						<Text text="Quantity" wrapping="true"/>
+					</Column>
+					<Column width="5rem">
+						<Text text="Deletion Ind" wrapping="true"/>
+					</Column>
+					<Column width="3.5rem">
+						<Text text="FAT" wrapping="true"/>
+					</Column>
+					<Column width="3.5rem">
+						<Text text="SAT" wrapping="true"/>
+					</Column>
+					<Column popinDisplay="Inline" demandPopin="true" minScreenWidth="Desktop">
+						<Text text="Make" wrapping="true"/>
+					</Column>
+					<Column popinDisplay="Inline" demandPopin="true" minScreenWidth="Desktop">
+						<Text text="Drawing #" wrapping="true"/>
+					</Column>
+					<Column width="4.5rem" hAlign="Center">
+						<Text text="Attachment" wrapping="true"/>
+					</Column>
+				</columns>
+				<ColumnListItem highlight="Success">
+					<cells>
+						<Text text="{path: 'materialView>Matnr', formatter:'.formatter.formatMaterial'}"/>
+						<Text text="{materialView>MatDesc}"/>
+						<Text text="{materialView>Quantity}"/>
+						<CheckBox selected="{=${materialView>DelInd} === 'X' ? true : false}" select="onSelectDelIndCheckBox"/>
+						<CheckBox selected="{=${materialView>Fat} === 'X' ? true : false}" select="onSelectFatCheckBox"/>
+						<CheckBox selected="{=${materialView>Sat} === 'X' ? true : false}" select="onSelectSatCheckBox"/>
+						<Input value="{materialView>Make}"/>
+						<Input value="{materialView>Drawing}"/>
+						<core:Icon src="sap-icon://pdf-attachment" press="onDisplayAttachment" visible="{materialView>Link}" color="Red"/>
+					</cells>
+				</ColumnListItem>-->
+			<!--sticky="ColumnHeaders,HeaderToolbar" - use this property in 1.77 vesrion-->
+			<!--<columns>
+						<Column id="Matnr">
+							<customData>
+								<core:CustomData key="p13nData"
+									value='\{"columnKey": "Matnr", "maxLength": "18","columnIndex":"1", "isCurrency": false, "leadingProperty": "Matnr", "sortProperty": "Matnr", "type": "numeric"}'/>
+							</customData>
+							<Text text="{/#MLSubItemsSet/Matnr/@sap:label}"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{Matnr}"/>
+							</cells>
+						</ColumnListItem>
+					</items>-->
+			<!--</Table>-->
+			<!--</smartTable:SmartTable>-->
+		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<!--<Button text="Edit" press="onEdit" type="Emphasized" visible="{materialView>/bEdit}"/>-->
+				<Button text="Cancel" press="onCancel" type="Reject" visible="{materialView>/bCancel}"/>
+				<Button text="Save" press="onSave" type="Accept" visible="{materialView>/bSave}"/>
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>

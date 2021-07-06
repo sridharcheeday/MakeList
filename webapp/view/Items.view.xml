@@ -1,0 +1,401 @@
+<mvc:View controllerName="ps.dewa.makelist.MakeList.controller.Items" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout" xmlns:ui="sap.ui.table" xmlns:uxap="sap.uxap" xmlns:form="sap.ui.layout.form" xmlns:unf="sap.ui.unified">
+	<NavContainer id="idNav" initialPage="idItemsPage">
+		<pages>
+			<!--xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:html="http://www.w3.org/1999/xhtml"-->
+			<Page id="idItemsPage" showNavButton="true" navButtonPress="onNavBack" showFooter="true" class="pageTitleClass"
+				title="{= ${objectView>/mode} === 'C' ? 'Create Makelist Document' : ${objectView>/mode} === 'E' ? 'Edit Makelist Document' : 'Display Makelist Document'}">
+				<!--Project# {objectView>/project}-->
+				<content>
+					<uxap:ObjectPageLayout id="idPageLayout" subSectionLayout="TitleOnLeft">
+						<!--upperCaseAnchorBar="false" enableLazyLoading="true" useIconTabBar="true" navigate="onChangeSections" sectionChange="onChangeSections"-->
+						<uxap:headerContent>
+							<ObjectHeader responsive="true" fullScreenOptimized="false" iconAlt="{Name}" title="{ProjDesc} ({objectView>/project})" titleActive="false"
+								backgroundDesign="Translucent" number="#{objectView>/MakeNo}" class="objectNumberClass">
+								<!--intro="{objectView>/project}"-->
+								<statuses>
+									<ObjectStatus text="{= ${StatusText} !== '' ? ${StatusText} : ${objectView>/MakeNo} === '0000000000' ? 'New' : 'Saved'}"
+										state="{ path:'Status', formatter: '.formatter.setHeaderStatusState'}" class="sapMObjectStatusLarge objectStatusClass"/>
+								</statuses>
+								<attributes>
+									<!--<ObjectAttribute title="{i18n>MLIST}" text="{objectView>/MakeNo}" class="AttributeTextClass headerStatusTextClass"/>-->
+									<ObjectAttribute title="{i18n>VENDOR}" text="{VendorDesc}" class="AttributeTextClass headerStatusTextClass"/>
+									<ObjectAttribute title="{i18n>CREATE_DATE}" text="{path: 'CreatedDate', formatter:'.formatter.formatDate'}"
+										class="AttributeTextClass headerStatusTextClass"/>
+									<!--<ObjectAttribute title="" text="" class="AttributeTextClass"/>-->
+									<ObjectAttribute title="{i18n>CREATEDBY}" text="{CreatedBy}{=${CreatedName} === '' ? '' : ' - ' + ${CreatedName}}"
+										class="AttributeTextClass headerStatusTextClass"/>
+									<ObjectAttribute title="{i18n>EDITEDBY}" text="{EditBy}{=${EditName} === '' ? '' : ' - ' + ${EditName}}"
+										class="AttributeTextClass headerStatusTextClass"/>
+									<!--<ObjectAttribute title="{i18n>STATUS}"
+										text="{= ${StatusText} !== '' ? ${StatusText} : ${objectView>/MakeNo} === '0000000000' ? 'New' : 'Saved'}"
+										class="AttributeTextClass headerStatusTextClass">
+										<customData>
+											<core:CustomData key="colorClass" value="{ path:'Status', formatter: '.formatter.setHeaderStatusColors'}" writeToDom="true"/>
+										</customData>
+									</ObjectAttribute>-->
+									<!--<core:CustomData key="style-class" value="{ path:'Status', formatter: '.formatter.setHeaderStatusColors'}" writeToDom="true"/>-->
+								</attributes>
+							</ObjectHeader>
+						</uxap:headerContent>
+						<uxap:sections>
+							<uxap:ObjectPageSection id="idItemsTab" title="Items">
+								<!--titleUppercase="false"-->
+								<uxap:subSections>
+									<uxap:ObjectPageSubSection >
+										<!--titleUppercase="false"-->
+										<ui:TreeTable id="idTreeTable" rows="{path:'objectView>/makelist', parameters: {arrayNames:['children']}}" selectionMode="Single"
+											ariaLabelledBy="title" selectionBehavior="RowOnly" rowActionCount="1" visibleRowCountMode="Interactive" alternateRowColors="true"
+											enableCellFilter="true" enableColumnFreeze="true" enableColumnReordering="true">
+											<!--class="treeTableRowColor"-->
+											<!--<ui:rowSettingsTemplate>
+												<ui:RowSettings highlight="{objectView>Status}"/>
+											</ui:rowSettingsTemplate>-->
+											<!--<ui:rowActionTemplate>
+												<ui:RowAction>
+													<ui:RowActionItem icon="sap-icon://navigation-right-arrow" type="Navigation" press="gotoMaterials"/>
+												</ui:RowAction>
+											</ui:rowActionTemplate>-->
+											<ui:extension>
+												<OverflowToolbar>
+													<Title text="PO Items ({objectView>/iItemCount})" class="ItemTableTitleClass" level="H6"/>
+													<ToolbarSpacer/>
+													<Button text="{i18n>EXND_ALL}" press="onExpandAll"/>
+													<Button text="{i18n>EXND_FIRST_ALL}" press="onExpandFirstLevel"/>
+													<Button text="{i18n>COLLAPSE_ALL}" press="onCollapseAll"/>
+													<Button text="{i18n>CLR_FILTER}" icon="sap-icon://clear-filter" press="onClearFilters" type="Emphasized"/>
+													<Button text="{i18n>RESET_SORT}" icon="sap-icon://reset" press="onClearSortings" type="Emphasized"/>
+													<!--<Button icon="sap-icon://refresh" press="onRefresh" tooltip="Refresh" type="Emphasized"/>-->
+													<Button icon="sap-icon://download" press="onDownload" tooltip="Download" type="Emphasized"/>
+												</OverflowToolbar>
+											</ui:extension>
+											<ui:columns>
+												<!--<ui:Column width="6px">-->
+												<!--	<Text/>-->
+												<!--	<ui:template>-->
+												<!--		<Text/>-->
+												<!--	</ui:template>-->
+												<!--</ui:Column>-->
+												<ui:Column width="15rem" filterProperty="SubSection" showSortMenuEntry="true" sortProperty="SubSection">
+													<Text text="{i18n>SEC_SUBSEC}" wrapping="true" class="ColumnHeadTextClass"/>
+													<ui:template class="treeTableRowColor">
+														<Text text="{objectView>SubSection}"></Text>
+													</ui:template>
+												</ui:Column>
+												<ui:Column filterProperty="SubSectionDesc" showSortMenuEntry="true" sortProperty="SubSectionDesc">
+													<Text text="{i18n>COL_DESC}" wrapping="true" class="ColumnHeadTextClass"/>
+													<ui:template>
+														<Text text="{objectView>SubSectionDesc}"/>
+													</ui:template>
+												</ui:Column>
+												<ui:Column width="7rem" filterProperty="Matnr" showSortMenuEntry="true" sortProperty="Matnr">
+													<Text text="{i18n>COL_MAT}" wrapping="true" class="ColumnHeadTextClass"/>
+													<ui:template>
+														<!--<HBox>-->
+														<!--	<core:Icon src="sap-icon://navigation-right-arrow" press="onClickIcon" class="sapUiTableTreeIcon materialTreeIcon"-->
+														<!--		visible="{=${objectView>Matnr} === '' ? false : true}"/>-->
+															<Text text="{objectView>Matnr}"/>
+														<!--</HBox>-->
+													</ui:template>
+												</ui:Column>
+												<ui:Column filterProperty="MatDesc" showSortMenuEntry="true" sortProperty="MatDesc">
+													<Text text="{i18n>COL_MAT_DESC}" wrapping="true" class="ColumnHeadTextClass"/>
+													<ui:template>
+														<Text text="{objectView>MatDesc}"/>
+													</ui:template>
+												</ui:Column>
+												<ui:Column width="8rem" filterProperty="PoNum" showSortMenuEntry="true" sortProperty="PoNum">
+													<Text text="{i18n>COL_PO_DOC}" wrapping="true" class="ColumnHeadTextClass"/>
+													<ui:template>
+														<Text text="{objectView>PoNum}"/>
+													</ui:template>
+												</ui:Column>
+												<ui:Column width="6rem" filterProperty="PoItem" defaultFilterOperator="EQ" showSortMenuEntry="true" sortProperty="PoItem">
+													<Text text="{i18n>COL_ITM_NO}" wrapping="true" class="ColumnHeadTextClass"/>
+													<ui:template>
+														<Text text="{objectView>PoItem}"/>
+													</ui:template>
+												</ui:Column>
+												<ui:Column width="6rem" filterProperty="Quantity" showSortMenuEntry="true" sortProperty="Quantity">
+													<Text text="{i18n>COL_QTY}" wrapping="true" class="ColumnHeadTextClass"/>
+													<ui:template>
+														<Text text="{objectView>Quantity}"/>
+													</ui:template>
+												</ui:Column>
+												<ui:Column width="2.4rem">
+													<Text/>
+													<ui:template>
+														<!--<HBox>-->
+														<core:Icon src="sap-icon://process" color="{ path:'objectView>BOMStatus', formatter: '.formatter.setTreeTableRowColors'}"
+															class="treeTableRowNavigator" visible="{= ${objectView>Matnr} === '' ? false : true}" press="gotoMaterials" tooltip="{i18n>GOTO_SUBITEMS}"/>
+														<!--</HBox>-->
+													</ui:template>
+													<!--<ui:customData>
+														<core:CustomData key="colorClass" value="{ path:'objectView>Status', formatter: '.formatter.setTreeTableRowColors'}" writeToDom="true"/>
+													</ui:customData>-->
+												</ui:Column>
+											</ui:columns>
+										</ui:TreeTable>
+									</uxap:ObjectPageSubSection>
+								</uxap:subSections>
+							</uxap:ObjectPageSection>
+							<uxap:ObjectPageSection titleUppercase="false" title="{i18n>APPROVERS}" visible="{objectView>/isApprovalTabVisible}">
+								<!--titleLevel="Auto" visible="{=${objectView>/isApprovalAgentsTabVisible} === true ? false : true}"-->
+								<uxap:subSections>
+									<uxap:ObjectPageSubSection titleUppercase="false">
+										<core:Fragment fragmentName="ps.dewa.makelist.MakeList.fragments.ML.ApproversTable" type="XML"/>
+									</uxap:ObjectPageSubSection>
+								</uxap:subSections>
+							</uxap:ObjectPageSection>
+							<uxap:ObjectPageSection id="idAgentsDispTab" titleUppercase="false" title="{i18n>APPROVERS}"
+								visible="{objectView>/isApprovalAgentsTabVisible}">
+								<!--titleLevel="Auto"-->
+								<uxap:subSections>
+									<uxap:ObjectPageSubSection titleUppercase="false">
+										<core:Fragment fragmentName="ps.dewa.makelist.MakeList.fragments.ML.ApproverAgentsTable" type="XML"/>
+									</uxap:ObjectPageSubSection>
+								</uxap:subSections>
+							</uxap:ObjectPageSection>
+							<uxap:ObjectPageSection id="idAgentsEditTab" titleUppercase="false" title="{i18n>APPROVERS}"
+								visible="{objectView>/isApprovalAgentsEditTabVisible}">
+								<!--titleLevel="Auto"-->
+								<uxap:subSections>
+									<uxap:ObjectPageSubSection titleUppercase="false">
+										<core:Fragment fragmentName="ps.dewa.makelist.MakeList.fragments.ML.ApproverAgentsEditTable" type="XML"/>
+									</uxap:ObjectPageSubSection>
+								</uxap:subSections>
+							</uxap:ObjectPageSection>
+							<uxap:ObjectPageSection titleUppercase="false" title="{i18n>TIT_APPR_LOG}" visible="{objectView>/isApprovalLogTabVisible}">
+								<!--titleLevel="Auto"-->
+								<uxap:subSections>
+									<uxap:ObjectPageSubSection titleUppercase="false">
+										<core:Fragment fragmentName="ps.dewa.makelist.MakeList.fragments.ML.ApproversLogTable" type="XML"/>
+									</uxap:ObjectPageSubSection>
+								</uxap:subSections>
+							</uxap:ObjectPageSection>
+							<uxap:ObjectPageSection titleUppercase="false" title="{i18n>TIT_CHANGE_LOG}" visible="{objectView>/isChangeLogTabVisible}">
+								<!--titleLevel="Auto"-->
+								<uxap:subSections>
+									<uxap:ObjectPageSubSection titleUppercase="false">
+										<core:Fragment fragmentName="ps.dewa.makelist.MakeList.fragments.ML.ChangeLogTable" type="XML"/>
+									</uxap:ObjectPageSubSection>
+								</uxap:subSections>
+							</uxap:ObjectPageSection>
+							<uxap:ObjectPageSection titleUppercase="false" title="{i18n>ATTACHMENTS}">
+								<!--titleLevel="Auto" visible="{objectView>/isChangeAttachmentsTabVisible}"-->
+								<uxap:subSections>
+									<uxap:ObjectPageSubSection titleUppercase="false">
+										<core:Fragment fragmentName="ps.dewa.makelist.MakeList.fragments.ML.Attachments" type="XML"/>
+									</uxap:ObjectPageSubSection>
+								</uxap:subSections>
+							</uxap:ObjectPageSection>
+						</uxap:sections>
+					</uxap:ObjectPageLayout>
+				</content>
+				<footer>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button text="{i18n>BTN_EDIT}" type="Emphasized" press="onEdit" visible="{objectView>/bVisibleEditButton}"/>
+						<Button text="{i18n>BTN_SAVE}" press="onSaveAlert" type="Accept" visible="{objectView>/bVisibleSaveButton}"/>
+						<Button text="{i18n>CANCEL}" type="Reject" press="onCancel" visible="{objectView>/bVisibleCancelButton}"/>
+						<Button text="{=${Status} === 'CLR' ? 'Re-Submit' : ${objectView>/mode} === 'C' ? 'Save &amp; Submit' : 'Submit'}" type="Accept"
+							press="onSubmit" visible="{objectView>/bVisibleSubmitButton}"/>
+						<Button text="{i18n>BTN_APPROVE}" type="Accept" press="onApprove" visible="{objectView>/bVisibleFooterButtons}"/>
+						<Button text="{i18n>BTN_RETURN}" type="Reject" press="onReturn" visible="{objectView>/bVisibleFooterButtons}"/>
+						<!--<Button text="Reject" type="Reject" press="onReject" visible="{objectView>/bVisibleFooterButtons}"/>-->
+						<Button text="{i18n>BTN_REJECT}" type="Reject" press="onReject" visible="{=${CancelDocFlag} === 'X' ? true : false}"/>
+						<!--<Button text="Cancel MakeList" type="Reject" press="onCancelDocument" visible="{=${objectView>/CancelDocFlag} === 'X' ? true : false}"/>-->
+					</Toolbar>
+				</footer>
+			</Page>
+			<Page id="idSubItemsPage" title="{= ${objectView>/mode} === 'D' ? 'Display Sub Items' : 'Update Sub Items'}" showNavButton="true"
+				navButtonPress="onBackToItems" showFooter="false" class="pageTitleClass">
+				<content>
+					<ObjectHeader responsive="true" fullScreenOptimized="false" iconAlt="{materialView>/material}" intro="{materialView>/material}"
+						title="{materialView>/MatDesc}" titleActive="false" backgroundDesign="Translucent">
+						<!--title="{materialView>/MLSubItemsSet/0/MatDesc}"-->
+						<attributes>
+							<ObjectAttribute title="{i18n>PO}" text="{materialView>/MLSubItemsSet/0/PoNum}" class="AttributeTextClass subItemsHeaderStatusTextClass"/>
+							<ObjectAttribute title="{i18n>PO_ITM}" text="{materialView>/MLSubItemsSet/0/PoItem}"
+								class="AttributeTextClass subItemsHeaderStatusTextClass"/>
+							<ObjectAttribute title="{i18n>PO_ITM_QTY}" text="{materialView>/ItemQuantity}" class="AttributeTextClass subItemsHeaderStatusTextClass"/>
+							<!--<ObjectAttribute title="{i18n>INSP_LOT}" text="{materialView>/InspLot}"/>-->
+							<!--<ObjectNumber number="{materialView>/TotalQuantity}"/>-->
+						</attributes>
+					</ObjectHeader>
+					<ui:Table id="idMatTable" rows="{materialView>/MLSubItemsSet}" alternateRowColors="true" enableCellFilter="true" enableColumnFreeze="true"
+						enableColumnReordering="true" selectionMode="Single" minAutoRowCount="5" visibleRowCount="10" visibleRowCountMode="Interactive"
+						selectionBehavior="RowOnly" rowActionCount="1">
+						<!--<ui:rowActionTemplate>
+							<ui:RowAction>
+								<ui:RowActionItem icon="sap-icon://navigation-right-arrow" type="Navigation" press="onDisplayAdditionalInfo"/>
+							</ui:RowAction>
+						</ui:rowActionTemplate>-->
+						<ui:extension>
+							<OverflowToolbar>
+								<Title text="PO Sub Items ({materialView>/iItemCount})" class="ItemTableTitleClass" level="H5"/>
+								<ToolbarSpacer/>
+								<Button text="{i18n>BTN_CLR_FILTER}" icon="sap-icon://clear-filter" press="onClearMatFilters" type="Emphasized"/>
+								<Button text="{i18n>BTN_RESET_SORT}" icon="sap-icon://reset" press="onClearMatSortings" type="Emphasized"/>
+							</OverflowToolbar>
+						</ui:extension>
+						<ui:columns>
+							<ui:Column width="7rem" filterProperty="Matnr" showSortMenuEntry="true" sortProperty="Matnr">
+								<Text text="{i18n>COL_MAT_NO}" wrapping="true" class="ColumnHeadTextClass"/>
+								<ui:template>
+									<Text text="{materialView>Matnr}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column filterProperty="MatDesc" showSortMenuEntry="true" sortProperty="MatDesc">
+								<Text text="{i18n>COL_MAT_DESC}" wrapping="true" class="ColumnHeadTextClass"/>
+								<ui:template>
+									<Text text="{materialView>MatDesc}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="7rem" filterProperty="Quantity" showSortMenuEntry="true" sortProperty="Quantity">
+								<Text text="{i18n>COL_BOM_QTY}" wrapping="true" class="ColumnHeadTextClass"/>
+								<ui:template>
+									<Input value="{materialView>Quantity}" change="onChangeBOMQty" enabled="{materialView>/bSave}"/>
+									<!--{materialView>Quantity} value="{path:'materialView>Quantity', type:'sap.ui.model.type.Currency'}"-->
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="6rem">
+								<Text text="{i18n>COL_TOT_QTY}" wrapping="true" class="ColumnHeadTextClass"/>
+								<ui:template>
+									<Text text="{= Math.round(${materialView>Quantity} * ${materialView>ItemQuantity}).toFixed(2) }"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="5rem" filterProperty="DelInd" showSortMenuEntry="true" sortProperty="DelInd" hAlign="Center">
+								<Text text="{i18n>COL_DEL_IND}" wrapping="true" class="ColumnHeadTextClass"/>
+								<ui:template>
+									<CheckBox selected="{=${materialView>DelInd} === 'X' ? true : false}" select="onSelectDelIndCheckBox"
+										enabled="{parts: [{path: 'materialView>/bSave'},{path: 'materialView>Fat'},{path: 'materialView>Sat'}], formatter:'.formatter.delIndProperty'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="3.5rem" filterProperty="Fat" showSortMenuEntry="true" sortProperty="Fat" hAlign="Center">
+								<Text text="{i18n>COL_FAT}" wrapping="true" class="ColumnHeadTextClass"/>
+								<ui:template>
+									<CheckBox selected="{=${materialView>Fat} === 'X' ? true : false}" select="onSelectFatCheckBox"
+										enabled="{parts: [{path: 'materialView>/bSave'},{path: 'materialView>DelInd'}], formatter:'.formatter.fatsatProperty'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="3.5rem" filterProperty="Sat" showSortMenuEntry="true" sortProperty="Sat" hAlign="Center">
+								<Text text="{i18n>COL_SAT}" wrapping="true" class="ColumnHeadTextClass"/>
+								<ui:template>
+									<CheckBox selected="{=${materialView>Sat} === 'X' ? true : false}" select="onSelectSatCheckBox"
+										enabled="{parts: [{path: 'materialView>/bSave'},{path: 'materialView>DelInd'}], formatter:'.formatter.fatsatProperty'}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" filterProperty="Make" showSortMenuEntry="true" sortProperty="Make">
+								<Text text="{i18n>COL_MAKE}" wrapping="true" class="ColumnHeadTextClass"/>
+								<ui:template>
+									<Input value="{materialView>Make}" enabled="{materialView>/bSave}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="8rem" filterProperty="Drawing" showSortMenuEntry="true" sortProperty="Drawing">
+								<Text text="{i18n>COL_DRAWING}" wrapping="true" class="ColumnHeadTextClass"/>
+								<ui:template>
+									<Input value="{materialView>Drawing}" enabled="{materialView>/bSave}"/>
+								</ui:template>
+							</ui:Column>
+							<ui:Column width="2.4rem">
+								<Text/>
+								<ui:template>
+									<core:Icon src="sap-icon://process" class="treeTableRowNavigator" press="onDisplayAdditionalInfo" tooltip="{i18n>GOTO_ADDL_INFO}"/>
+								</ui:template>
+							</ui:Column>
+						</ui:columns>
+					</ui:Table>
+					<Panel visible="{materialView>/bAddlInfoPanelVisible}" headerText="Additional Information" expandable="false" expanded="true">
+						<form:SimpleForm title="{materialView>/AddlInfo/MatDesc}" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="4" labelSpanM="6"
+							labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="3" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="2" columnsM="2"
+							singleContainerFullSize="false" editable="true" class="AddlInfoDialogFormTitle">
+							<form:content>
+								<core:Title text=""/>
+								<Label text="{i18n>LBL_EQIP_NO}"/>
+								<Input value="{materialView>/AddlInfo/EquipNo}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>LBL_EQIP_ID}"/>
+								<Input value="{materialView>/AddlInfo/EquipId}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>EQIP_DESC}"/>
+								<Input value="{materialView>/AddlInfo/EquipDesc}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>VOLTAGE_RATE}"/>
+								<Input value="{materialView>/AddlInfo/VoltageRate}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>DEPARTMENT}"/>
+								<Input value="{materialView>/AddlInfo/Department}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>WORK_HOUR}"/>
+								<Input value="{materialView>/AddlInfo/WorkingHr}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>CAN_COMMON}"/>
+								<Input value="{materialView>/AddlInfo/CanBeCommon}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>LBL_REMARKS}"/>
+								<Input value="{materialView>/AddlInfo/Remarks}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>POPULATION}"/>
+								<Input value="{materialView>/AddlInfo/Population}" enabled="{materialView>/bSave}"/>
+								<core:Title text=""/>
+								<Label text="{i18n>CONSULTANT}"/>
+								<Input value="{materialView>/AddlInfo/Consultant}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>CONTRACTOR}"/>
+								<Input value="{materialView>/AddlInfo/Contractor}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>CUSTODIAN}"/>
+								<Input value="{materialView>/AddlInfo/Custodian}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>SCADA_CODE}"/>
+								<Input value="{materialView>/AddlInfo/ScadaCode}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>MAKE_TYPE}"/>
+								<Input value="{materialView>/AddlInfo/MakeType}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>MAKE_MODEL}"/>
+								<Input value="{materialView>/AddlInfo/MakeModelNo}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>MAKE_PROJ}"/>
+								<Input value="{materialView>/AddlInfo/MakeProjType}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>MAKE_STATE}"/>
+								<Input value="{materialView>/AddlInfo/MakeState}" enabled="{materialView>/bSave}"/>
+								<Label text="{i18n>MAKE_SUPP}"/>
+								<Input value="{materialView>/AddlInfo/MakeSupplier}" enabled="{materialView>/bSave}"/>
+							</form:content>
+						</form:SimpleForm>
+					</Panel>
+					<Panel visible="{materialView>/bAttachmentsPanelVisible}" headerText="{i18n>ATTACHMENTS}" expandable="false" expanded="true">
+						<form:SimpleForm editable="true" backgroundDesign="Transparent" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12"
+							labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+							singleContainerFullSize="false">
+							<form:content>
+								<unf:FileUploader id="idSubItmfileUploader" placeholder="{i18n>UPL_PHOLDER_TEXT}" tooltip="{i18n>UPLD_TTIP}"
+									typeMissmatch="handleTypeMissmatch" fileType="jpeg,jpg,pdf,txt,pptx,xls,csv,xlsx,ppt,doc,docx,bmp,png,vsd,zip" style="Emphasized"
+									multiple="false" enabled="{materialView>/bUploaderEnabled}"/>
+								<Button text="{i18n>UPLOAD}" width="50%" type="Accept" press="onUpload" tooltip="{i18n>UPLD_TTIP}" icon="sap-icon://upload"
+									enabled="{materialView>/bUploaderEnabled}"/>
+							</form:content>
+						</form:SimpleForm>
+						<List items="{materialView>/Attachments}" mode="Delete" delete="onMatAttchListDelete" updateFinished="onSubItemsAttachTableUpdateFinished"
+							updateStarted="onUploadListUpdateStarted" noDataText="{i18n>NO_FILES_FOUND}">
+							<!--delete="onListDelete" growing="true" growingThreshold="5" growingScrollToLoad="true"-->
+							<StandardListItem title="{materialView>Filename}" type="Active" press="onListItemPressed" description="{materialView>Description}"
+								icon="{materialView>FileIcon}" iconDensityAware="false" iconInset="false"/>
+							<!--title="{materialView>Filename}" description="{materialView>FileSizeTxt}"-->
+						</List>
+						<!--Same above functionality - using Upload Collection-->
+						<!--<UploadCollection id="UploadCollection" maximumFilenameLength="55" maximumFileSize="1000" fileDeleted="onFileDeleted"-->
+						<!--	sameFilenameAllowed="false" instantUpload="false" filenameLengthExceed="onFilenameLengthExceed" fileRenamed="onFileRenamed"-->
+						<!--	fileSizeExceed="onFileSizeExceed" change="onAttachmentChange" mode="SingleSelectMaster" beforeUploadStarts="onBeforeUploadStarts"-->
+						<!--	multiple="true" uploadComplete="onUploadComplete" noDataText="No files found." items="{materialView>/Attachments}"-->
+						<!--	noDataDescription="Drop files or use the &quot;Add&quot; button to keep files ready for upload">-->
+						<!--uploadUrl="/sap/opu/odata/sap/ZPS_MLIST_ODATA_MAKE_LIST_SRV/MLAttachmentsSet" items="{path: '/FileSet'}"-->
+						<!--	<items>-->
+						<!--		<UploadCollectionItem documentId="{materialView>ID}" fileName="{materialView>Filename}" mimeType="{materialView>Mimetype}"-->
+						<!--			enableEdit="false" enableDelete="true" visibleDelete="true" visibleEdit="false"></UploadCollectionItem>-->
+						<!--visible="{parts: [{path: 'materialView>/poNum'}, {path: 'materialView>/material'}, {path: 'materialView>/AddlInfo/Matnr'}], formatter: '.formatter'}"-->
+						<!--url="/sap/opu/odata/sap/ZPS_MLIST_ODATA_MAKE_LIST_SRV/MLAttachmentsSet(guid'{ID}')/$value"-->
+						<!--	</items>-->
+						<!--</UploadCollection>-->
+						<!--<Button id="Button" text="Upload Now" press="onStartUpload"/>-->
+					</Panel>
+				</content>
+				<!--<footer>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button text="Cancel" press="onCancel" type="Reject" visible="{materialView>/bCancel}"/>
+						<Button text="Save" press="onSave" type="Accept" visible="{materialView>/bSave}"/>
+					</Toolbar>
+				</footer>-->
+			</Page>
+		</pages>
+	</NavContainer>
+</mvc:View>

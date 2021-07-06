@@ -1,0 +1,318 @@
+{
+	"_version": "1.9.0",
+	"sap.app": {
+		"id": "ps.dewa.makelist.MakeList",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"dataSources": {
+			"mainService": {
+				"uri": "/sap/opu/odata/sap/ZPS_MLIST_ODATA_MAKE_LIST_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/metadata.xml"
+				}
+			}
+		},
+		"sourceTemplate": {
+			"id": "sap.ui.ui5-template-plugin.1worklist",
+			"version": "1.52.7"
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "sap-icon://task",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "ps.dewa.makelist.MakeList.view.App",
+			"type": "XML",
+			"async": true,
+			"id": "app"
+		},
+		"dependencies": {
+			"minUI5Version": "1.42.0",
+			"libs": {
+				"sap.collaboration": {
+					"lazy": true
+				},
+				"sap.m": {},
+				"sap.ui.comp": {},
+				"sap.ui.core": {},
+				"sap.ui.layout": {
+					"minVersion": ""
+				},
+				"sap.ushell": {},
+				"sap.uxap": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "ps.dewa.makelist.MakeList.i18n.i18n"
+				}
+			},
+			"": {
+				"dataSource": "mainService",
+				"preload": true
+			}
+		},
+		"services": {
+			"ShellUIService": {
+				"factoryName": "sap.ushell.ui5service.ShellUIService",
+				"lazy": false,
+				"settings": {
+					"setTitle": "auto"
+				}
+			}
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "ps.dewa.makelist.MakeList.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"bypassed": {
+					"target": [
+						"notFound"
+					]
+				},
+				"async": true
+			},
+			"routes": [
+				{
+					"pattern": "",
+					"name": "main",
+					"target": [
+						"main"
+					]
+				},
+				{
+					"pattern": "display",
+					"name": "display",
+					"target": [
+						"display"
+					]
+				},
+				{
+					"pattern": "create",
+					"name": "create",
+					"target": [
+						"create"
+					]
+				},
+				{
+					"pattern": "DisplayML/{MLId}/{mode}/:NavFromCreate:",
+					"name": "displayitems",
+					"target": [
+						"displayitems"
+					]
+				},
+				{
+					"pattern": "MLHeaderSet/{objectId}/{vendor}/{mode}/:ProjType:",
+					"name": "items",
+					"target": [
+						"items"
+					]
+				},
+				{
+					"pattern": "EditML/{MLId}/{mode}/:WiId:",
+					"name": "edititems",
+					"target": [
+						"edititems"
+					]
+				},
+				{
+					"pattern": "MLDisplayWiId/{WiId}",
+					"name": "displaywiid",
+					"target": [
+						"displaywiid"
+					]
+				},
+				{
+					"pattern": "MLHeaderSet/{objectId}/{vendor}/:ProjType:/MLSubItems/{material}/{po}/{item}/{mode}/{section}/{subsection}",
+					"name": "material",
+					"target": [
+						"material"
+					]
+				},
+				{
+					"pattern": "selectcreate",
+					"name": "selectcreate",
+					"target": [
+						"selectcreate"
+					]
+				},
+				{
+					"pattern": "selectdisplay",
+					"name": "selectdisplay",
+					"target": [
+						"selectdisplay"
+					]
+				},
+				{
+					"pattern": "DisplayMS/{MSId}/:NavFromCreate:",
+					"name": "displaymsitems",
+					"target": [
+						"displaymsitems"
+					]
+				},
+				{
+					"pattern": "CreateMS/{ponum}/{vendor}",
+					"name": "createmsitems",
+					"target": [
+						"createmsitems"
+					]
+				},
+				{
+					"pattern": "EditMS/{MSId}/:WiId:",
+					"name": "editmsitems",
+					"target": [
+						"editmsitems"
+					]
+				},
+				{
+					"pattern": "MSDisplayWiId/{WiId}",
+					"name": "displaymswiid",
+					"target": [
+						"displaymswiid"
+					]
+				}
+			],
+			"targets": {
+				"main": {
+					"viewName": "Main",
+					"viewId": "main",
+					"viewLevel": 1,
+					"title": "{i18n>MainViewTitle}"
+				},
+				"display": {
+					"viewName": "Display",
+					"viewId": "display",
+					"viewLevel": 2,
+					"title": "{i18n>DisplayViewTitle}"
+				},
+				"create": {
+					"viewName": "Create",
+					"viewId": "create",
+					"viewLevel": 2,
+					"title": "{i18n>worklistViewTitle}"
+				},
+				"selectcreate": {
+					"viewName": "SelectCreate",
+					"viewId": "selectcreate",
+					"viewLevel": 2,
+					"title": "{i18n>SelectMatViewTitle}"
+				},
+				"displayitems": {
+					"viewName": "Items",
+					"viewId": "displayitems",
+					"viewLevel": 3,
+					"title": "{i18n>objectViewTitle}"
+				},
+				"selectdisplay": {
+					"viewName": "SelectDisplay",
+					"viewId": "selectdisplay",
+					"viewLevel": 3,
+					"title": "{i18n>DisplayMatViewTitle}"
+				},
+				"items": {
+					"viewName": "Items",
+					"viewId": "items",
+					"viewLevel": 3,
+					"title": "{i18n>objectViewTitle}"
+				},
+				"edititems": {
+					"viewName": "Items",
+					"viewId": "edititems",
+					"viewLevel": 3,
+					"title": "{i18n>objectViewTitle}"
+				},
+				"displaywiid": {
+					"viewName": "Items",
+					"viewId": "displaywiid",
+					"viewLevel": 3,
+					"title": "{i18n>objectViewTitle}"
+				},
+				"displaymsitems": {
+					"viewName": "MatSelItems",
+					"viewId": "displaymsitems",
+					"viewLevel": 3,
+					"title": "{i18n>MSItemsDisplayViewTitle}"
+				},
+				"createmsitems": {
+					"viewName": "MatSelItems",
+					"viewId": "createmsitems",
+					"viewLevel": 3,
+					"title": "{i18n>MSItemsCreateViewTitle}"
+				},
+				"editmsitems": {
+					"viewName": "MatSelItems",
+					"viewId": "editmsitems",
+					"viewLevel": 3,
+					"title": "{i18n>MSItemsEditViewTitle}"
+				},
+				"displaymswiid": {
+					"viewName": "MatSelItems",
+					"viewId": "displaymswiid",
+					"viewLevel": 3,
+					"title": "{i18n>objectViewTitle}"
+				},
+				"editmat": {
+					"viewName": "Material",
+					"viewId": "editmaterial",
+					"viewLevel": 4,
+					"title": "{i18n>materialViewTitle}"
+				},
+				"material": {
+					"viewName": "Material",
+					"viewId": "material",
+					"viewLevel": 4,
+					"title": "{i18n>materialViewTitle}"
+				},
+				"objectNotFound": {
+					"viewName": "ObjectNotFound",
+					"viewId": "objectNotFound"
+				},
+				"notFound": {
+					"viewName": "NotFound",
+					"viewId": "notFound"
+				}
+			}
+		}
+	},
+	"sap.platform.abap": {
+		"uri": "/sap/bc/ui5_ui5/sap/zmakelist/webapp",
+		"_version": "1.1.0"
+	}
+}

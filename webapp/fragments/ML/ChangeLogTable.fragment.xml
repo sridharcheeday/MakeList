@@ -1,0 +1,92 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:t="sap.ui.table">
+	<t:Table rows="{objectView>/ChangeLog}" alternateRowColors="true" minAutoRowCount="3" visibleRowCount="5" visibleRowCountMode="Interactive"
+		selectionMode="None">
+		<!--visibleRowCount="{objectView>/ChangeLogVisibleRowCount}" fixedColumnCount="5"-->
+		<t:extension>
+			<Toolbar class="sapMTBHeader-CTX">
+				<Title text="{i18n>CHNG_LOG}" class="ItemTableTitleClass" level="H6"/>
+				<ToolbarSpacer/>
+			</Toolbar>
+		</t:extension>
+		<t:columns>
+			<t:Column flexible="true" resizable="true" width="6.8em">
+				<Text text="{i18n>USER_ID}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>UserID}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="12em">
+				<Text text="{i18n>USER_NAME}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>UserName}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="7em">
+				<Text text="{i18n>MLIST}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>ObjectID}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="8em">
+				<Text text="{i18n>PO_NUM}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>PONum}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="5em">
+				<Text text="{i18n>PO_ITEM}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>POItem}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="8em">
+				<Text text="{i18n>MAT}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>Material}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="8em">
+				<Text text="{i18n>BOM}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>BOM}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="7em">
+				<Text text="{i18n>FIELD_NAME}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>FieldName}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="7em">
+				<Text text="{i18n>OLD_VALUE}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>OldValue}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="7em">
+				<Text text="{i18n>NEW_VALUE}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>NewValue}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="6.5em">
+				<Text text="{i18n>DATE}" wrapping="true"/>
+				<t:template>
+					<Text text="{path: 'objectView>Date', formatter:'.formatter.formatDate'}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="6.2em">
+				<Text text="{i18n>TIME}" wrapping="true"/>
+				<t:template>
+					<Text text="{path: 'objectView>Time', formatter: '.formatter.formatTime'}"/>
+				</t:template>
+			</t:Column>
+			<t:Column flexible="true" resizable="true" width="4.5em">
+				<Text text="{i18n>MODE}" wrapping="true"/>
+				<t:template>
+					<Text text="{objectView>IndicatorText}"/>
+				</t:template>
+			</t:Column>
+		</t:columns>
+	</t:Table>
+</core:FragmentDefinition>

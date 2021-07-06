@@ -1,0 +1,41 @@
+<mvc:View controllerName="ps.dewa.makelist.MakeList.controller.SelectDisplay" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	<Page title="{i18n>DisplaySelViewTitle}" showNavButton="true" navButtonPress="onBack" class="pageTitleClass">
+		<content>
+			<HBox height="100%" justifyContent="Center">
+				<VBox width="50%" justifyContent="Center">
+					<HBox width="100%" justifyContent="Center">
+						<layout:Grid defaultSpan="L12 M12 S12">
+							<layout:content>
+								<form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanM="12" labelSpanL="12" labelSpanXL="12" emptySpanL="8"
+									emptySpanM="6">
+									<form:content>
+										<Label text="{i18n>MAT_SEL_DOC_LBL}" required="true"/>
+										<Input value="{SelectDisplay>/MSelNo}" valueHelpOnly="true" showValueHelp="true" valueHelpRequest="_handleMSelValueHelp"/>
+										<Label/>
+										<Button text="{i18n>BTN_BACK}" press="goToMainPage" type="Default">
+											<layoutData>
+												<layout:GridData span="XL4 L4 M4 S4"/>
+											</layoutData>
+										</Button>
+										<Button text="{i18n>BTN_DISPLAY}" press="goToItemsView" type="Emphasized">
+											<layoutData>
+												<layout:GridData span="XL4 L4 M4 S4"/>
+											</layoutData>
+										</Button>
+										<Button text="{i18n>BTN_EDIT}" press="goToItemsEditView" type="Emphasized" enabled="{SelectDisplay>/bCreateButtonEnabled}">
+											<layoutData>
+												<layout:GridData span="XL4 L4 M4 S4"/>
+											</layoutData>
+										</Button>
+									</form:content>
+								</form:SimpleForm>
+							</layout:content>
+						</layout:Grid>
+					</HBox>
+				</VBox>
+			</HBox>
+		</content>
+	</Page>
+</mvc:View>

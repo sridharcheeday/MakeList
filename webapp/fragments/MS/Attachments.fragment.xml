@@ -1,0 +1,29 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:unf="sap.ui.unified" xmlns:form="sap.ui.layout.form">
+	<Panel expandable="false" expanded="true">
+		<headerToolbar>
+			<Toolbar class="sapMTBHeader-CTX">
+				<Title text="{i18n>ATTACHMENTS}" class="ItemTableTitleClass" level="H6"/>
+				<ToolbarSpacer/>
+				<!--<Button icon="sap-icon://refresh" press="getAttachments" type="Emphasized" tooltip="Refresh Attachments List"/>-->
+			</Toolbar>
+		</headerToolbar>
+		<form:SimpleForm editable="true" backgroundDesign="Transparent" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12"
+			labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+			singleContainerFullSize="false">
+			<form:content>
+				<unf:FileUploader id="fileUploader" placeholder="{i18n>UPL_PHOLDER_TEXT}" tooltip="{i18n>UPLD_TTIP}" typeMissmatch="handleTypeMissmatch"
+					fileType="jpeg,jpg,pdf,txt,pptx,xls,csv,xlsx,ppt,doc,docx,bmp,png,vsd,zip" style="Emphasized" multiple="false"
+					enabled="{objectView>/bUploaderEnabled}"/>
+				<Button text="{i18n>UPLOAD}" width="50%" type="Accept" press="onHeaderUpload" tooltip="{i18n>UPLD_FILE}" icon="sap-icon://upload"
+					enabled="{objectView>/bUploaderEnabled}"/>
+				<!--id="idUpload"-->
+			</form:content>
+		</form:SimpleForm>
+		<List items="{path: 'objectView>/Attachments', filters: [{ path: 'Delete', operator: 'EQ', value1: ''}]}" mode="Delete"
+			delete="onAttchListDelete" updateFinished="onHeaderAttachTableUpdateFinished" growing="true" growingScrollToLoad="true">
+			<!--growingThreshold="5" -->
+			<StandardListItem title="{objectView>Filename}" type="Active" press="onHeadAttachListItemPressed" description="{objectView>FileSize}"
+				icon="{objectView>FileIcon}" iconDensityAware="false" iconInset="false"/>
+		</List>
+	</Panel>
+</core:FragmentDefinition>
