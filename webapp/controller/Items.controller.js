@@ -69,8 +69,6 @@ sap.ui.define([
 				visibleDelete: true,
 				attachmentFileTypes: ["jpg", "txt", "ppt", "pptx", "doc", "xls", "pdf", "png", "jpeg", "csv", "docx", "zip", "bmp", "png", "vsd"],
 				attachmentsCount: 0
-					// ListSeparators.All,
-					// "showSeparators": ListSeparators.All,
 			});
 			this.setModel(oMatViewModel, "materialView");
 		},
